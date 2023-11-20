@@ -2,11 +2,11 @@ import React,{useState} from "react";
 import axios from "axios";
 export default function Form(){
   const [formData,setFormData]=useState({
-    firstname:"",
-    secondname:"",
+    projectname:"",
+    projectmanager:"",
     email:"",
-    // priority:"",
-    // description:""
+    priority:"low",
+    description:""
   })
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,23 +25,28 @@ export default function Form(){
       <ul className="form-style-1">
         <li>
           <label>
-            Full Name <span className="required">*</span>
+            Project Name <span className="required">*</span>
           </label>
           <input
             type="text"
-            name="firstname"
-            className="field-divided"
-            value={formData.firstname}
+            name="projectname"
+            className="field-long"
+            value={formData.projectname}
             onChange={handleChange}
-            placeholder="First"
-          />
+            placeholder="Name"
+     />
+     </li>
+     <li>
+      <label>
+        Project Manager
+      </label>
           <input
             type="text"
-            name="secondname"
-            value={formData.secondname}
+            name="projectmanager"
+            value={formData.projectmanager}
             onChange={handleChange}
-            className="field-divided"
-            placeholder="Last"
+            className="field-long"
+            placeholder="Manager"
           />
         </li>
         <li>
@@ -50,14 +55,19 @@ export default function Form(){
           </label>
           <input type="text" value={formData.email} name="email" onChange={handleChange} className="field-long" />
         </li>
-        {/* <li>
-          <label>Priority</label>
-          <select name="priority" onChange={handleChange} value={formData.priority} className="field-select">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </li>
+        <li>
+      <label>Priority</label>
+      <select
+        name="priority"
+        onChange={handleChange}
+        value={formData.priority}
+        className="field-select"
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </li>
         <li>
           <label>
             Description <span className="required">*</span>
@@ -69,7 +79,7 @@ export default function Form(){
             onChange={handleChange}
             className="field-long field-textarea"
           />
-        </li> */}
+        </li>
         <li>
           <button className="btn" type="submit">Submit </button>
         </li>
