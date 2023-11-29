@@ -1,27 +1,35 @@
-import React,{useState,useEffect} from "react";
+import React, { useState } from "react";
+import axios from 'axios';
 
-export default function AddProject(){
-    const [formData,setFormData]=useState({
-        projectname:"",
-        projectmanager:"",
-        email:"",
-        priority:"low",
-        description:"",
-        startdate:"",
-        enddate:""
-      })
-      const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-      };
-     const handleSubmit=async (e)=>{
-      e.preventDefault();
-      try {
-        const response = await axios.post('http://localhost:5001/api/contacts', formData);
-        console.log('User created:', response.data);
-      } catch (error) {
-        console.error('Error creating user:', error);
-      }
-    };
+export default function AddProject() {
+  const [formData, setFormData] = useState({
+    projectname: "",
+    projectmanager: "",
+    email: "",
+    priority: "low",
+    description: "",
+    startdate: "",
+    enddate: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupContent, setPopupContent] = useState({ message: "", color: "" });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5001/api/contacts', formData);
+      console.log('Project created:', response.data);
+      setPopupContent({ message: "Project submitted successfully!", color: "green" });
+      setShowPopup(true);
+    } catch (error) {
+      console.error('Error creating project:', error);
+      setPopupContent({ message: "Error creating project. Please try again." ,error, color: "red" });
+      setShowPopup(true);
+    }
+  };
     return(
         <>
         <div className="container mx-auto px-4">
@@ -150,7 +158,19 @@ export default function AddProject(){
     </div>
   </form>
 </div>
-
+{showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white-500 p-4 rounded-md shadow-sm">
+            <p className={`text-${popupContent.color} font-semibold mb-2`}>{popupContent.message}</p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
         </>
     )
 }
